@@ -1,2 +1,28 @@
 #!/bin/bash
-echo $(printf %0 $(($((5#$(echo $WATER | tr 'water' '01234'))) + $((5#$(echo $STIR | tr 'stir.' '01234'))))) | tr '01234567' 'bestcholl')
+
+# Convert WATER and STIR to base-10 integers
+water_int=$(echo $WATER | tr 'water' '01234')
+stir_int=$(echo $STIR | tr 'stir.' '01234567')
+
+# Add the two integers
+result_int=$((water_int + stir_int))
+
+# Convert the result to base-bestchol
+result_base=""
+while [ $result_int -gt 0 ]; do
+    remainder=$((result_int % 8))
+    case $remainder in
+        0) result_base="b$result_base";;
+        1) result_base="e$result_base";;
+        2) result_base="s$result_base";;
+        3) result_base="t$result_base";;
+        4) result_base="c$result_base";;
+        5) result_base="h$result_base";;
+        6) result_base="o$result_base";;
+        7) result_base="l$result_base";;
+    esac
+    result_int=$((result_int / 8))
+done
+# Print the result
+echo $result_base
+
